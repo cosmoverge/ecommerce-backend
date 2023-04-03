@@ -14,12 +14,14 @@ import compression from 'compression';
 import {alloedDomains} from './config/index.js';
 import helmet from 'helmet'
 
-console.log('alloew',alloedDomains)
 dotenv.config();
+
+mongoose.set('strictQuery', true);
+
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => {
-    console.log('connected to db');
+    console.log('Connected to MongoDB');
   })
   .catch((err) => {
     console.log(err.message);
@@ -46,7 +48,7 @@ app.get('/api/keys/google', (req, res) => {
   res.send({ key: process.env.GOOGLE_API_KEY || '' });
 });
 
-const __dirname = path.resolve();
+// const __dirname = path.resolve();
 
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*'); 
@@ -61,10 +63,10 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use(express.static(path.join(__dirname, '/frontend/build')));
-app.get('*', (req, res) =>
-  res.sendFile(path.join(__dirname, '/frontend/build/index.html'))
-);
+// app.use(express.static(path.join(__dirname, '/frontend/build')));
+// app.get('*', (req, res) =>
+//   res.sendFile(path.join(__dirname, '/frontend/build/index.html'))
+// );
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
@@ -72,5 +74,5 @@ app.use((err, req, res, next) => {
 
 const port = process.env.PORT || 5001;
 app.listen(port, () => {
-  console.log(`serve at http://localhost: ${port}`);
+  console.log(`Serving at http://localhost:${port}`);
 });

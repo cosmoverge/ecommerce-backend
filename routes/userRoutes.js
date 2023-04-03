@@ -4,7 +4,7 @@ import expressAsyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
 import { isAuth, isAdmin, generateToken } from '../utils.js';
 import Otp from '../models/otpModel.js';
-import { passwordResetMail } from '../emailConfig.js';
+// import { passwordResetMail } from '../emailConfig.js';
 
 const userRouter = express.Router();
 
@@ -196,46 +196,46 @@ userRouter.post(
   })
 );
 
-userRouter.post(
-  '/email-send',
-  expressAsyncHandler(async (req, res) => {
-    let data = await User.findOne({ email: req.body.email });
-    // console.log(data);
-    const responseType = {};
-    if (data) {
-      const isOtp = await Otp.find({
-        email: req.body.email,
-      });
-      if (isOtp) {
-        let oldOtp = await Otp.findOneAndDelete({ email: req.body.email });
-      }
+// userRouter.post(
+//   '/email-send',
+//   expressAsyncHandler(async (req, res) => {
+//     let data = await User.findOne({ email: req.body.email });
+//     // console.log(data);
+//     const responseType = {};
+//     if (data) {
+//       const isOtp = await Otp.find({
+//         email: req.body.email,
+//       });
+//       if (isOtp) {
+//         let oldOtp = await Otp.findOneAndDelete({ email: req.body.email });
+//       }
 
-      let otpCode = Math.floor(Math.random() * 10000 + 1);
+//       let otpCode = Math.floor(Math.random() * 10000 + 1);
 
-      const VALID_DURATION = 120000;
-      let otpData = new Otp({
-        email: req.body.email,
-        code: otpCode,
-        expiredAt: new Date().getTime() + VALID_DURATION,
-      });
+//       const VALID_DURATION = 120000;
+//       let otpData = new Otp({
+//         email: req.body.email,
+//         code: otpCode,
+//         expiredAt: new Date().getTime() + VALID_DURATION,
+//       });
 
-      // send otm email notification
-      passwordResetMail({ TO: req.body.email, OTP: otpCode });
+//       // send otm email notification
+//       passwordResetMail({ TO: req.body.email, OTP: otpCode });
 
-      let otpRespond = await otpData.save();
-      responseType.statusText = 'Success';
-      responseType.message = 'Please check your email id';
+//       let otpRespond = await otpData.save();
+//       responseType.statusText = 'Success';
+//       responseType.message = 'Please check your email id';
 
-      setTimeout(async () => {
-        let oldOtp = await Otp.findOneAndDelete({ email: req.body.email });
-      }, VALID_DURATION);
-    } else {
-      responseType.statusText = 'error';
-      responseType.message = 'Email Id not Exist';
-    }
-    res.status(200).json(responseType);
-  })
-);
+//       setTimeout(async () => {
+//         let oldOtp = await Otp.findOneAndDelete({ email: req.body.email });
+//       }, VALID_DURATION);
+//     } else {
+//       responseType.statusText = 'error';
+//       responseType.message = 'Email Id not Exist';
+//     }
+//     res.status(200).json(responseType);
+//   })
+// );
 userRouter.post(
   '/change-password',
   // isAuth,

@@ -5,7 +5,7 @@
 ### 1. Clone repo
 
 ```
-$ git clone https://github.com/gcnaveen/backendamzona.git
+$ git clone https://github.com/cosmoverge/backendamzona.git
 ```
 
 ### 2. Create .env File

@@ -5,7 +5,7 @@
 ### 1. Clone repo
 
 ```
-$ git clone https://github.com/cosmoverge/backendamzona.git
+git clone https://github.com/cosmoverge/ecommerce-backend.git
 ```
 
 ### 2. Create .env File
